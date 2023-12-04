@@ -6,8 +6,6 @@ import { useState } from 'react';
 
 export default function App() {
   const [result, setResult] = useState("");
-  const [coverImage, setCoverImage] = useState("");
-  const [trackList, setTrackList] = useState("");
 
   const get = (e) => {
     e.preventDefault();
@@ -20,12 +18,11 @@ export default function App() {
 
     client
       .searchRelease(catno.value, "catno")
-      .then(data => data.results[0] ? fetch(data.results[0].resource_url):setResult(""))
+      .then(data => data.results[0] ? fetch(data.results[0].resource_url):setResult("404"))
       .then(res => res.json())
       .then(json => setResult(json));
 
     console.log(result);
-    console.log(trackList);
 
     if(result === ""){
       console.log("NOT FOUND!");
@@ -44,8 +41,8 @@ export default function App() {
       </FormControl>
       <Box className="resultField" m={2} borderWidth='1.5px'  borderRadius='lg'  borderColor='black' minH="660">
         <Text as='b'>検索結果</Text><br></br>
-        {result === "" && (<Text color='tomato' as='b'>NOT FOUND</Text>)}
-        {result &&
+        {result === "404" && (<Text color='tomato' as='b'>NOT FOUND</Text>)}
+        {(result !== "404" && result ) &&
           (
             <Flex>
               <Box className="info" m={2} borderWidth='1.5px'  borderRadius='lg' borderColor='black' height='auto'>
