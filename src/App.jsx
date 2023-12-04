@@ -20,7 +20,7 @@ export default function App() {
 
     client
       .searchRelease(catno.value, "catno")
-      .then(data => fetch(data.results[0].resource_url))
+      .then(data => data.results[0] ? fetch(data.results[0].resource_url):setResult(""))
       .then(res => res.json())
       .then(json => setResult(json));
 
@@ -35,6 +35,7 @@ export default function App() {
   return (
     <ChakraProvider theme={theme}>
       <Heading m={2}>Vinyl Finder</Heading>
+      レコード盤やCDなどの型番からアルバム情報などを検索できます
       <FormControl className="searchForm" m={2} borderWidth='1.5px'  borderRadius='lg'  borderColor='black' width='auto'>
         <label>型番を入力してください 例:SVWC-70613<br></br>
           <Input type="text" id="catno_form" width="auto"/>
@@ -42,8 +43,8 @@ export default function App() {
         </label>
       </FormControl>
       <Box className="resultField" m={2} borderWidth='1.5px'  borderRadius='lg'  borderColor='black' minH="660">
-        <Text as='b'>検索結果</Text>
-        {result === undefined && (<Text color='tomato' as='b'>NOT FOUND</Text>)}
+        <Text as='b'>検索結果</Text><br></br>
+        {result === "" && (<Text color='tomato' as='b'>NOT FOUND</Text>)}
         {result &&
           (
             <Flex>
