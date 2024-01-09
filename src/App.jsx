@@ -29,7 +29,7 @@ export default function App() {
       .searchRelease(keyWord)
       .then(function(data){
         console.log(data);
-        (data.results ? fetch(data.results[0].resource_url):setResult("404"))
+        (data.results.length !== 0 ? fetch(data.results[0].resource_url):setResult("404"))
         .then(res => res.json())
         .then(function(json){
           client.searchRelease(json.artists[0].name, "artist")
